@@ -18,7 +18,7 @@ Create a map using Leaflet that plots all of the earthquakes from your data set 
 * Include popups that provide additional information about the earthquake when a marker is clicked.
 * Create a legend that will provide context for your map data.
 * Your visualization should look something like the map below.
-![2-BasicMap](Images/2-BasicMap.png)
+https://github.com/edithjimenez25/leaflet-challenge/blob/master/static/images/2-BasicMap.png
 
 ### Level 2: More Data (Optional)
 The USGS wants you to plot a second data set on your map to illustrate the relationship between tectonic plates and seismic activity. You will need to pull in a second data set and visualize it along side your original set of data. Data on tectonic plates can be found at <https://github.com/fraxen/tectonicplates>.
