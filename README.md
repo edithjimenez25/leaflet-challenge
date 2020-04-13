@@ -36,3 +36,22 @@ Your final product will be assessed on the following metrics:
 * Completion of assigned tasks
 * Visual appearance
 * Professionalism
+
+## Images Outputs
+Following are the images obtained with the solution code
+
+# For the street Map
+<img src="imagesOutput/Leaflet_Street_map_view.png">
+
+# For the Dark Map
+<img src="imagesOutput/Leaflet_Dark_map_view.png">
+
+# For Satellite Map
+<img src="imagesOutput/Leaflet_Satellite_map_view.png">
+
+# For Outdoors Map
+<img src="imagesOutput/Leaflet_Outdoors_map_view.png">
+
+# For Light Map
+<img src="imagesOutput/Leaflet_Light_map_view.png">
+
