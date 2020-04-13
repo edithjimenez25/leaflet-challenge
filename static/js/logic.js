@@ -11,11 +11,15 @@ GLOBAL USE INFO
 // We set the longitude, latitude, and the starting zoom level
 
 // Retrieve earthquake geoJSON data.
-var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
+var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson"
 
 // Alternate query - this take time to upload and could crash your browser
-// var queryAltUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson"
+// var queryUrl2 = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
 
+// Alternate query - this take time to upload and could crash your browser
+// var queryUrl3 = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson"
+
+// 
 // Perform a GET request to the query URL
 d3.json(queryUrl, function(data) {
   // Once we get a response, send the data.features object to the createMap function
@@ -23,20 +27,6 @@ d3.json(queryUrl, function(data) {
 
 });
 
-// create a function to create a circles according with the magnitude (mag) of the earthquake  
-function circleSize(mag) {
-  return mag * 15000;
-};
-
-// create a function to color the circle according with the magnitude
-function circleColor(mag) {
-  if (mag <=1) {return "#FFD700";} 
-  else if (mag <= 2) {return "#D6FA8C";}
-  else if (mag <= 3) {return "#BEED53";}
-  else if (mag <= 4) {return "#2E8B57";}
-  else if (mag <= 5) {return "#2E8B57";}
-  else {return "#006400"}
-};
 
 /***************************************************************************
 CREATE FEATURES
@@ -47,16 +37,16 @@ function createMapFeatures(earthquakeData) {
 
   // Give each feature a popup describing the place and time of the earthquake
   // Add tool tip and pop up information to each earthquake marker.
-  function onEachFeature(feature, layer) {
-    layer.bindPopup("<h3>" + feature.properties.place +
-        "</h3><hr><p>" + new Date(feature.properties.time) + "</p>" +
-        "</h3><hr><p>Magnitude: " + feature.properties.mag + "</p>");
-  };
+  function onEachFeature(features, layer) {
+    layer.bindPopup("<h3>" + features.properties.place +
+        "</h3><hr><p>" + new Date(features.properties.time) + "</p>" +
+        "</h3><hr><p>Magnitude: " + features.properties.mag + "</p>");
+  }
 
   // create a function to create a circles according with the magnitude (mag) of the earthquake  
   function circleSize(mag) {
-    return mag * 15000;
-  };
+    return mag * 30000;
+  }
 
   // create a function to color the circle according with the magnitude
   function circleColor(mag) {
@@ -66,17 +56,16 @@ function createMapFeatures(earthquakeData) {
     else if (mag <= 4) {return "#2E8B57";}
     else if (mag <= 5) {return "#2E8B57";}
     else {return "#006400"}
-  };
+  }
 
 
   // Create a GeoJSON layer containing the features array on the feature object  
   // Run the onEachDeature function once for each piece of data in the array
-  var earthquakes = L.geoJSON(earthquakeData, {
-    
-    pointToLayer: function(feature, latlng){
+  var earthquakes = L.geoJSON(earthquakeData, {    
+    pointToLayer: function(features, latlng){
       return L.circleMarker(latlng, {
-        radius: circleSize(feature.properties.mag),
-        color: circleColor(feature.properties.mag),
+        radius: circleSize(features.properties.mag),
+        color: circleColor(features.properties.mag),
         fillOpacity: 0.8
       });
     },
@@ -178,7 +167,6 @@ function createMap(earthquakes){
   FAULTLINE
   ***************************************************************************/
 
-
   // Add query for faultline from reference on the readme: https://github.com/fraxen/tectonicplates --> navigate GeoJson - Select PB2002 Plates file - copy the path
   var queryFaultline = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_plates.json" ;
 
@@ -197,6 +185,7 @@ function createMap(earthquakes){
   
   });
   
+
   /***************************************************************************
   LEGEND
   ***************************************************************************/
@@ -209,7 +198,7 @@ function createMap(earthquakes){
       else if (l <= 4) {return "#5D8700";}
       else if (l <= 5) {return "#2E8B57";}
       else {return "#006400"}
-  };
+  }
  
   // Create a legend to display information about on the map
   var legend = L.control({position: "bottomright"});
@@ -233,24 +222,5 @@ function createMap(earthquakes){
 
   legend.addTo(myMap);
 
-
-
-  // Add query for faultline from reference on the readme: https://github.com/fraxen/tectonicplates --> navigate GeoJson - Select PB2002 Plates file - copy the path
-  var queryFaultline = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_plates.json" ;
-
-
-  // Perform a GET request to the faultline query and then add the faultline to the layer
-  d3.json(queryFaultline , function(data) {
-    // Once we get a response, send the data to the GeoJSON
-    L.geoJSON(data, {
-      style: function() {
-        return {
-          color: "#c7ecee",
-          fillOpacity: 0, 
-        }
-      }
-    }).addTo(faultline)
-  
-  });
   
 }
