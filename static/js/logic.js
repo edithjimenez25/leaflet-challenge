@@ -6,6 +6,9 @@
 /***************************************************************************
 GLOBAL USE INFO
 ***************************************************************************/
+window.addEventListener("touchmove", event => {
+  console.log(event)
+}, {passive: true} );
 
 // Creating our initial map object
 // We set the longitude, latitude, and the starting zoom level
@@ -37,15 +40,19 @@ function createMapFeatures(earthquakeData) {
 
   // Give each feature a popup describing the place and time of the earthquake
   // Add tool tip and pop up information to each earthquake marker.
-  function onEachFeature(features, layer) {
-    layer.bindPopup("<h3>" + features.properties.place +
-        "</h3><hr><p>" + new Date(features.properties.time) + "</p>" +
-        "</h3><hr><p>Magnitude: " + features.properties.mag + "</p>");
+  function onEachFeature(feature, layer) {
+    if (feature.properties && feature.propertie) {
+      // layer.bindTooltip("my tooltip text").openTooltip();
+      layer.bindPopup("<div><p>" + feature.properties.place +
+        "</p><p>" + new Date(feature.properties.time) + "</p>" +
+        "<p>Magnitude: " + feature.properties.mag + "</p></div>").openPopup();
+    }
   }
+  
 
   // create a function to create a circles according with the magnitude (mag) of the earthquake  
   function circleSize(mag) {
-    return mag * 30000;
+    return mag * 7;
   }
 
   // create a function to color the circle according with the magnitude
@@ -69,7 +76,7 @@ function createMapFeatures(earthquakeData) {
         fillOpacity: 0.8
       });
     },
-    onEachFeature : onEachFeature,
+    // onEachFeature : onEachFeature,
   });
 
   // Sending our earthquakes layer to the createMap function
@@ -167,7 +174,8 @@ function createMap(earthquakes){
   FAULTLINE
   ***************************************************************************/
 
-  // Add query for faultline from reference on the readme: https://github.com/fraxen/tectonicplates --> navigate GeoJson - Select PB2002 Plates file - copy the path
+  // Add query for faultline from reference on the readme: https://github.com/fraxen/tectonicplates 
+  // --> navigate GeoJson - Select PB2002 Plates file - copy the path
   var queryFaultline = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_plates.json" ;
 
 
@@ -224,3 +232,5 @@ function createMap(earthquakes){
 
   
 }
+
+
